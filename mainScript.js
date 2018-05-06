@@ -20,7 +20,7 @@ function Multiplication(str,bit)
 function Displacement(str)
 {
     str = str + '0';
-   return str;
+    return str;
 }
 
 function Add(str1, str2)
@@ -76,7 +76,7 @@ function Add(str1, str2)
             index2-- ;
         }
         
-        for (var index1 = str1.length - 5; index1 >= 0; index1--)
+        for (var index1 = str1.length - 5; index1 >= 0; index1--)      //(var index1 = str1.length - 5; index1 >= 0; index1--)
         {
             if (str1[index1] == '0' && inwardly == 0)
             {
@@ -111,24 +111,27 @@ function Add(str1, str2)
         return result;
     }
 }
+
+
+
     
 function CreateTable(num)
 {
-    var body=document.querySelector("body"),
-    table=document.querySelector("table"),
-    height=60,
-    width=3500,
-    rows=(num + 5),
-    columns=14,    
+    var body = document.querySelector("body"),
+    table = document.querySelector("table"),
+    height = 60,
+    width = 3500,
+    rows = (num + 5),
+    columns = 13,    
     tableRow = "",
     tableData = "",
     tableHeader = "",
-    firstTable = document.querySelector("table");   //???
+    firstTable = document.querySelector("table");  
 
     var table = document.createElement("table");
     table.setAttribute("width",width);
-    table.setAttribute("border","1.5px");  //?????????
-    table.setAttribute("bordercolor","black");    //потом ввести мои цвета
+    table.setAttribute("border","1.5px");  
+    table.setAttribute("bordercolor","black");    
     table.setAttribute("align","center"); 
 
     tableRow = document.createElement("tr");    
@@ -148,12 +151,6 @@ function CreateTable(num)
         tableHeader.appendChild(text);
         tableRow.appendChild(tableHeader);
     }
-
-    tableHeader = document.createElement("th");
-    tableHeader.setAttribute("rowspan", "2");
-    text = document.createTextNode("Результат");
-    tableHeader.appendChild(text);
-    tableRow.appendChild(tableHeader);
 
     table.appendChild(tableRow);
     tableRow = document.createElement("tr");
@@ -178,8 +175,9 @@ function CreateTable(num)
     }
     table.appendChild(tableRow);
 
-    for (var r = 0; r < rows - 2; r++)
+   for (var r = 0; r < rows - 2; r++)
     {
+        
         tableRow = document.createElement("tr");
         for (var c = 0; c < columns; c++)
         {
@@ -189,6 +187,7 @@ function CreateTable(num)
             tableData.setAttribute("height",height);
         }
         table.appendChild(tableRow);
+       //table.appendChild(tableRow);  //попробовать занести все эти table в массив и при нажатии каждую по отдельности доставать  
     }
 
     if (firstTable == null)
@@ -200,157 +199,192 @@ function CreateTable(num)
         var newTable = body.appendChild(table);
         return document.body.replaceChild(newTable, firstTable);
     }
-
-
-/*<form>
-<table width="650" border="1" cellspacing="0" cellpadding="5">
-    <thead>
-        <tr>
-            <th rowspan="2" bgcolor="#FBF0DB">Такты</th>
-            <th colspan="3" bgcolor="#DBF0DB">Этап 1</th>
-            <th colspan="3" bgcolor="#DBF0DB">Этап 2</th>
-            <th colspan="3" bgcolor="#DBF0DB">Этап 3</th>
-            <th colspan="3" bgcolor="#DBF0DB">Этап 4</th>
-        </tr>
-        <tr>
-            <th colspan="1" bgcolor="#FFDAB9">Сдвиг</th>
-            <th colspan="1" bgcolor="#FFDAB9">A*b[3]</th>
-            <th colspan="1" bgcolor="#FFDAB9">Сумма+A*b[3]</th>
-                
-            <th colspan="1" bgcolor="#FFDAB9">Сдвиг</th>
-            <th colspan="1" bgcolor="#FFDAB9">A*b[2]</th>
-            <th colspan="1" bgcolor="#FFDAB9">Сумма+A*b[2]</th>
-            
-            <th colspan="1" bgcolor="#FFDAB9">Сдвиг</th>
-            <th colspan="1" bgcolor="#FFDAB9">A*b[1]</th>
-            <th colspan="1" bgcolor="#FFDAB9">Сумма+A*b[1]</th>
-                
-            <th colspan="1" bgcolor="#FFDAB9">Сдвиг</th>
-            <th colspan="1" bgcolor="#FFDAB9">A*b[0]</th>
-            <th colspan="1" bgcolor="#FFDAB9">Сумма+A*b[0]</th>
-        </tr>
-    </thead>
-    <thead>
-       
-        </thead>
-    <tbody id="dynamic"></tbody>
-</table>
-</form>*/
 }
 
-function AddToTable(dis,mult,add,ind)
+function AddToTable(dis,mult,add,ind,A,B,ind)
 {
+    var k = 0;
     tempNode1 = 0;
     tempNode2 = 2;
     for (var index = 0; index < 4; index++)
     {
-        document.getElementById((index + 1 + ind) + "." + (index + 2 + tempNode1)).innerHTML =  dis[index];
-        document.getElementById((index + 1 + ind) + "." + (index + 3 + tempNode1)).innerHTML = "A * b["+(5-tempNode2) +"] = " + mult[index];
-        document.getElementById((index + 1 + ind) + "." + (index + 4 + tempNode1)).innerHTML = "Sum + A * b["+(5-tempNode2) +"] = " + add[index];
+        var k = index - 1;
+        if (dis[index].length == 7)
+            dis[index] = '0' + dis[index];
+            else if (dis[index].length == 6)
+            dis[index] = '00' + dis[index];
+            else if (dis[index].length == 5)
+            dis[index] = '000' + dis[index];
+
+            if (add[index].length == 7)
+            add[index] = '0' + add[index];
+            else if (add[index].length == 6)
+            add[index] = '00' + add[index];
+            else if (add[index].length == 5)
+            add[index] = '000' + add[index];
+
+       
+
+        if (index == 0)
+        {
+            var tenA = parseInt(A,2);
+            var tenB = parseInt(B,2);
+            document.getElementById((index + 1 + ind) + "." + (index + 2 + tempNode1)).innerHTML =  "A[" + ind + "] = " + A + "<sub>2</sub> = " + tenA + "<sub>10</sub>" + "<br>B[" + ind + "] = " + B + "<sub>2</sub> = " + tenB + "<sub>10</sub>" + "<br>P = " + dis[index];
+        } 
+        else 
+        {
+            document.getElementById((index + 1 + ind) + "." + (index + 2 + tempNode1)).innerHTML = add[index - 1] + "<br>P = " + dis[index];
+        }
+
+        document.getElementById((index + 1 + ind) + "." + (index + 3 + tempNode1)).innerHTML = "P = " + dis[index] + "<br>A = " + A + "<br>b["+(5-tempNode2) +"] = " + B[index] + "<br>A * b["+(5-tempNode2) +"] = " + mult[index];
+        
+        if (index == 3)
+        {
+            var ten = parseInt(add[index],2);
+            document.getElementById((index + 1 + ind) + "." + (index + 4 + tempNode1)).innerHTML = "P = " + dis[index] + "<br>A * b["+(5-tempNode2) +"] = " + mult[index] + "<br>P + A * b["+(5-tempNode2) +"] = " + add[index] + "<br><b>Ответ: " + add[index] + "<sub>2</sub> = " + ten + "<sub>10</sub>";
+        }
+        else 
+        {
+            document.getElementById((index + 1 + ind) + "." + (index + 4 + tempNode1)).innerHTML = "P = " +  dis[index] + "<br>A * b["+(5-tempNode2) +"] = " + mult[index] + "<br>P + A * b["+(5-tempNode2) +"] = " + add[index];
+        }
         tempNode1 += 2;
         tempNode2++;
+
+       // setTimeout(function() {k++}, 1000);
     }
 }
 
 function MainFunc()
 {
-var numbers = document.getElementById("f1");
+    var regexp = new RegExp();
+    regexp = /(\d[0-6])|\d/;
+    var numbers = document.getElementById("f1");
 
-var numbers1 = numbers.elements[0].value.split(',');
-var numbers2 = numbers.elements[1].value.split(',');
-var tact = parseInt(numbers.elements[2].value);
+    var numbers1 = numbers.elements[0].value.split(',');
+    var numbers2 = numbers.elements[1].value.split(',');
+    var tact = parseInt(numbers.elements[2].value);
 
-if (numbers1.length != numbers2.length)
-{
-    alert("Пожалуйста, введите вектора одинаковой длины!");    
-}
-else 
-{
-    for (var ind = 0; ind < numbers1.length; ind++)
+
+    if (numbers.elements[2].value == "" || numbers.elements[0].value == "" || numbers.elements[1].value == "") 
     {
-        var first = parseInt(numbers1[ind]);          
-        var second = parseInt(numbers2[ind]);
-        
-        if (first > 16 || second > 16)
+        alert("Пожалуйста, заполните все поля!");
+        return;
+    }
+
+    if (tact == 0) 
+    {
+        alert("Пожалуйста, введите натуральное число!"); 
+        return;
+    }
+
+    if (numbers1.length != numbers2.length)
+    {
+        alert("Пожалуйста, введите вектора одинаковой длины!");   
+        return; 
+    }
+    else 
+    {
+        for (var ind = 0; ind < numbers1.length; ind++)
         {
-            alert("Пожалуйста, введите число от 0 до 15!");   //+ должна быть какая-то переменная для выхода
+            if (regexp.test(numbers1[ind]) == false || regexp.test(numbers2[ind]) == false)
+            {
+                alert("Пожалуйста, введите числа!!!");  
+                return;
+            }
+
+            var first = parseInt(numbers1[ind]);          
+            var second = parseInt(numbers2[ind]);
+            
+            if (first > 15 || second > 15)
+            {
+                alert("Пожалуйста, введите числа от 0 до 15!");  
+                return;
+            }
         }
-    }
-    CreateTable(numbers1.length);
+        CreateTable(numbers1.length);
 
-    for(var i = 1;i < numbers1.length + 4; i++)
-    {
-        document.getElementById(i+"."+1).innerHTML="Такты: "+(i*tact);
-    }
-
-    for (var ind = 0; ind < numbers1.length; ind++)
-    {
-        var first = parseInt(numbers1[ind]);            
-        var second = parseInt(numbers2[ind]);
-        var firstToString = first.toString(2);
-        var secondToString = second.toString(2);
-        var partSum = '0000';        
-        var dis = new Array(0);
-        var mult = new Array(0);
-        var add = new Array(0);
-        
-        if (firstToString.length == 3 || firstToString.length == 2 || firstToString.length == 1)
+        for(var i = 1;i < numbers1.length + 4; i++)
         {
-            firstToString = '0'+ firstToString;
-            if (firstToString.length < 4)
+            document.getElementById(i+"."+1).innerHTML="Такты: "+(i*tact);
+        }
+        
+        for (var ind = 0; ind < numbers1.length; ind++)
+        {
+            var first = parseInt(numbers1[ind]);            
+            var second = parseInt(numbers2[ind]);
+            var firstToString = first.toString(2);
+            var secondToString = second.toString(2);
+            var partSum = '0000';        
+            var dis = new Array(0);
+            var mult = new Array(0);
+            var add = new Array(0);
+            
+            if (firstToString.length == 3 || firstToString.length == 2 || firstToString.length == 1)
             {
                 firstToString = '0'+ firstToString;
                 if (firstToString.length < 4)
                 {
                     firstToString = '0'+ firstToString;
+                    if (firstToString.length < 4)
+                    {
+                        firstToString = '0'+ firstToString;
+                    }
                 }
             }
-        }
-        
-        if (secondToString.length == 3 || secondToString.length == 2 || secondToString.length == 1)
-            {
-                secondToString = '0'+ secondToString;
-                if (secondToString.length < 4)
+            
+            if (secondToString.length == 3 || secondToString.length == 2 || secondToString.length == 1)
                 {
                     secondToString = '0'+ secondToString;
                     if (secondToString.length < 4)
                     {
                         secondToString = '0'+ secondToString;
+                        if (secondToString.length < 4)
+                        {
+                            secondToString = '0'+ secondToString;
+                        }
                     }
                 }
-            }
-           
+               
             var tempNode1 = 0;  
             var tempNode2 = 2;
-        for (var index = 0; index < secondToString.length; index++)
-        {
-            console.log('ЭТАП ' + index);
-           // console.log(firstToString);
-           // console.log(secondToString);
-            var multRes = '';
-            var addRes = '';
-            var data = '';
             
-            partSum = Displacement(partSum);
-            dis.push(partSum);
+            for (var index = 0; index < secondToString.length; index++)
+            {
+                
+                console.log('ЭТАП ' + index);
+                console.log(firstToString);
+                console.log(secondToString);
+                var multRes = '';
+                
+                
+                console.log(partSum);
+                partSum = Displacement(partSum);
+                dis.push(partSum);
 
-            multRes = Multiplication(firstToString, secondToString[index]);
-            mult.push(multRes);
+                console.log("сдвиг = " + partSum);
 
-            partSum = Add(partSum,multRes);
-            add.push(partSum);
-            
-            console.log('сумма: ' +partSum);
-            tempNode1 += 2;
-            tempNode2++;
-        }
-        AddToTable(dis,mult,add,ind);
+                multRes = Multiplication(firstToString, secondToString[index]);
+                mult.push(multRes);
+
+                console.log("произведение" + multRes);
+
+                partSum = Add(partSum,multRes);
+                add.push(partSum);
+                
+                console.log('сумма: ' +partSum);
+                tempNode1 += 2;
+                tempNode2++;
+                //var timer = setInterval(AddToTable(dis,mult,add,ind,firstToString,secondToString,ind),5000);
+               // clearInterval(timer);
+            }
+             AddToTable(dis,mult,add,ind,firstToString,secondToString,ind);
+             //setTimeout(function() {console.log('HELLOOOO')}, 2000);
+            }
         }
     }
-
+        
+        
     
-    
-}
 
 
     //столбцов 13, строк - 4*n + 2!!!!!
