@@ -1,3 +1,8 @@
+/*
+    Author: Volakh Darya
+    Realization of the table: Alexander Yakutin
+*/
+
 function Multiplication(str,bit)
 {
     var strResult = '';
@@ -13,7 +18,6 @@ function Multiplication(str,bit)
     {
         strResult = str;      
     }
-
     return strResult;
 }
 
@@ -76,7 +80,7 @@ function Add(str1, str2)
             index2-- ;
         }
         
-        for (var index1 = str1.length - 5; index1 >= 0; index1--)      //(var index1 = str1.length - 5; index1 >= 0; index1--)
+        for (var index1 = str1.length - 5; index1 >= 0; index1--) 
         {
             if (str1[index1] == '0' && inwardly == 0)
             {
@@ -127,12 +131,11 @@ function CreateTable(num)
     tableData = "",
     tableHeader = "",
     firstTable = document.querySelector("table");  
-
     var table = document.createElement("table");
+
     table.setAttribute("width",width);
     table.setAttribute("border","1.5px");  
-    table.setAttribute("bordercolor","black");    
-    table.setAttribute("align","center"); 
+    table.setAttribute("bordercolor","black"); 
 
     tableRow = document.createElement("tr");    
     tableRow.setAttribute("bgcolor","#FBF0DB");
@@ -176,8 +179,7 @@ function CreateTable(num)
     table.appendChild(tableRow);
 
    for (var r = 0; r < rows - 2; r++)
-    {
-        
+    {        
         tableRow = document.createElement("tr");
         for (var c = 0; c < columns; c++)
         {
@@ -187,7 +189,6 @@ function CreateTable(num)
             tableData.setAttribute("height",height);
         }
         table.appendChild(tableRow);
-       //table.appendChild(tableRow);  //попробовать занести все эти table в массив и при нажатии каждую по отдельности доставать  
     }
 
     if (firstTable == null)
@@ -201,7 +202,7 @@ function CreateTable(num)
     }
 }
 
-function AddToTable(dis,mult,add,ind,A,B,ind)
+function AddToTable(dis,mult,add,index,A,B,ind)
 {
     var k = 0;
     tempNode1 = 0;
@@ -221,9 +222,7 @@ function AddToTable(dis,mult,add,ind,A,B,ind)
             else if (add[index].length == 6)
             add[index] = '00' + add[index];
             else if (add[index].length == 5)
-            add[index] = '000' + add[index];
-
-       
+            add[index] = '000' + add[index];       
 
         if (index == 0)
         {
@@ -249,8 +248,6 @@ function AddToTable(dis,mult,add,ind,A,B,ind)
         }
         tempNode1 += 2;
         tempNode2++;
-
-       // setTimeout(function() {k++}, 1000);
     }
 }
 
@@ -303,9 +300,9 @@ function MainFunc()
         }
         CreateTable(numbers1.length);
 
-        for(var i = 1;i < numbers1.length + 4; i++)
+        for(var ind = 1; ind < numbers1.length + 4; ind++)
         {
-            document.getElementById(i+"."+1).innerHTML="Такты: "+(i*tact);
+            document.getElementById(ind+"."+1).innerHTML="Такты: "+(ind*tact);
         }
         
         for (var ind = 0; ind < numbers1.length; ind++)
@@ -344,50 +341,27 @@ function MainFunc()
                         }
                     }
                 }
-               
-            var tempNode1 = 0;  
-            var tempNode2 = 2;
-            
+
             for (var index = 0; index < secondToString.length; index++)
             {
-                
                 console.log('ЭТАП ' + index);
-                console.log(firstToString);
-                console.log(secondToString);
-                var multRes = '';
-                
+                var multRes = '';                
                 
                 console.log(partSum);
                 partSum = Displacement(partSum);
                 dis.push(partSum);
-
                 console.log("сдвиг = " + partSum);
 
                 multRes = Multiplication(firstToString, secondToString[index]);
                 mult.push(multRes);
-
                 console.log("произведение" + multRes);
 
                 partSum = Add(partSum,multRes);
-                add.push(partSum);
-                
+                add.push(partSum);                
                 console.log('сумма: ' +partSum);
-                tempNode1 += 2;
-                tempNode2++;
-                //var timer = setInterval(AddToTable(dis,mult,add,ind,firstToString,secondToString,ind),5000);
-               // clearInterval(timer);
             }
-             AddToTable(dis,mult,add,ind,firstToString,secondToString,ind);
-             //setTimeout(function() {console.log('HELLOOOO')}, 2000);
-            }
+
+            AddToTable(dis,mult,add,index,firstToString,secondToString,ind);
         }
     }
-        
-        
-    
-
-
-    //столбцов 13, строк - 4*n + 2!!!!!
-
-
-
+} 
